@@ -43,16 +43,16 @@ function skorArtirici() {
    return skor++;
   }
 }
-
+//skor variable function içinde taımlandı
 const skor1 = skorArtirici();
-
+//console.log(skor1());
 // skor2 kodları
 let skor = 0;
 
 function skor2() {
   return skor++;
 }
-
+console.log(skor2());
 
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -64,11 +64,12 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru(maxSkor=25,minSkor=10){
+  
+  return Math.floor(Math.random() * (maxSkor - minSkor+1)) + minSkor;
+
 }
-
-
+console.log(takimSkoru(25,10));
 
 
 /* Görev 3: macSonucu() 
@@ -86,11 +87,20 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(takimSkoru,playNumber){
+  let EvSahibi=0;
+  let KonukTakim=0;
+  for(let i=0;i <playNumber;i++){
+    EvSahibi  += takimSkoru(25,10);
+    KonukTakim += takimSkoru(25,10);
+    
+  }
+  return {
+    "EvSahibi": EvSahibi,
+    "KonukTakim": KonukTakim
+  }
 }
-
-
+ console.log( macSonucu(takimSkoru,4));
 
 
 
@@ -109,11 +119,15 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
-
+function periyotSkoru(takimSkoru) {
+  let EvSahibi   = takimSkoru(25,10);
+  let KonukTakim = takimSkoru(25,10);
+  return {
+  "EvSahibi": EvSahibi,
+  "KonukTakim": KonukTakim
+  }
 }
-
+console.log( periyotSkoru(takimSkoru));
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -146,10 +160,65 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
-}
+/*function skorTabelasi(periyotSkoru,takimSkoru,playNumber) {
+  const newArray=[];
+  let EvSahibi=0;
+  let KonukTakim=0;
+  let number1;
+  let number2;
 
+  for(let i=1;i<playNumber;i++){
+    let number1= takimSkoru(25,10)
+    let number2= takimSkoru(25,10)
+    newArray.push(`${i}.Periyot: Ev Sahibi ${number1} - Konuk Takım ${number2}`);
+    EvSahibi+=number1;
+    KonukTakim+=number2;
+  }
+      if(EvSahibi != KonukTakim){
+        newArray.push(`Maç Sonucu: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`);
+      }
+      else if (EvSahibi == KonukTakim){
+        for(let i=1 ; EvSahibi != KonukTakim ; i++){
+          let number1= takimSkoru(25,10)
+          let number2= takimSkoru(25,10)
+          newArray.push(`${i}. Uzatma: Ev Sahibi ${number1} - Konuk Takım ${number2}`);
+          
+          EvSahibi+=number1;
+          KonukTakim+=number2;
+         }
+         newArray.push(`Maç Sonucu: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`);
+      }
+      
+      return newArray;
+    }
+    
+console.log(skorTabelasi(periyotSkoru,takimSkoru,5));*/
+function skorTabelasi(periyotSkoru,takimSkoru,playNumber) {
+  const result=[];
+  let EvSahibi=0;
+  let KonukTakim=0;
+  for(let i=1;i<=playNumber;i++){
+    let periyotSonuc=periyotSkoru(takimSkoru);
+    EvSahibi += periyotSonuc.EvSahibi;
+    KonukTakim += periyotSonuc.KonukTakim;
+    const metin = `${i}.Periyot: Ev Sahibi ${ periyotSonuc.EvSahibi} - Konuk Takım ${periyotSonuc.KonukTakim}`;
+    result.push(metin);
+  }
+  let i=1;
+  while(EvSahibi == KonukTakim){
+    let periyotSonuc=periyotSkoru(takimSkoru);
+    EvSahibi += periyotSonuc.EvSahibi;
+    KonukTakim += periyotSonuc.KonukTakim;
+    const metin = `${i}.Uzatma: Ev Sahibi ${ periyotSonuc.EvSahibi} - Konuk Takım ${periyotSonuc.KonukTakim}`;
+    result.push(metin);
+    i++;
+
+  }
+  const macSonucu= `Maç Sonucu: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`;
+  result.push(macSonucu);
+  return result;
+}
+console.log(skorTabelasi(periyotSkoru,takimSkoru,4));
 
 
 
